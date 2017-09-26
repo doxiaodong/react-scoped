@@ -1,6 +1,6 @@
 .DS_Store
 
-dist/
+docs/
 examples/
 coverage/
 node_modules/
