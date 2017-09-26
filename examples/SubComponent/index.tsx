@@ -16,7 +16,7 @@ export default class SubComponent extends Component<{}, {}> {
         text: 'Timeout Sub',
         showMore: true
       })
-    }, 2000)
+    }, 5000)
   }
 
   render() {

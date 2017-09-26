@@ -38,6 +38,10 @@ export default class ReactScoped extends Component<IReactScopedProps, {}> {
    * the react children Components are not included
    */
   modifyChildren = (child) => {
+    // null for null/false like {false && <div />}
+    if (!child) {
+      return null
+    }
     // child.type string for html tag: div, span, p, ...
     if (typeof child.type === 'string') {
       // child.props.children string for html content text

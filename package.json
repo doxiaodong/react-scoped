@@ -12,7 +12,7 @@
   "scripts": {
     "lint": "tslint \"{src,examples}/**/*.{ts,tsx}\"",
     "build": "rm -rf ./lib && npm run lint && tsc -d",
-    "pub": "npm run build && npm publish --registry http://registry.npmjs.org"
+    "pub": "npm run build && npm publish --registry https://registry.npmjs.org"
   },
   "author": "duxiaodong",
   "license": "MIT",
