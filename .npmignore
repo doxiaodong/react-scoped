@@ -1,5 +1,6 @@
 .DS_Store
 
+dist/
 examples/
 coverage/
 node_modules/
