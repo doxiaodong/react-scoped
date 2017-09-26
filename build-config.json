@@ -1,0 +1,24 @@
+{
+  "extends": "typescript-react",
+  "entries": {
+    "index": "examples/index.tsx"
+  },
+  "pages": {
+    "index": {
+      "template": "examples/index.html",
+      "entries": "index",
+      "path": ""
+    }
+  },
+  "transforms": {
+    "less": {
+      "transformer": "less",
+      "config": {
+        "autoprefixOptions": {
+          "browsers": ["last 2 version", "> 20%"]
+        },
+        "raw": true
+      }
+    }
+  }
+}

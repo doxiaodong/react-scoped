@@ -1,0 +1,38 @@
+{
+  "name": "react-scoped",
+  "version": "1.0.0-alpha",
+  "description": "react css-scoped component",
+  "main": "lib/index.js",
+  "module": "lib/index.js",
+  "typings": "lib.index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/doxiaodong/react-scoped.git"
+  },
+  "scripts": {
+    "lint": "tslint \"{src,examples}/**/*.{ts,tsx}\"",
+    "build": "rm -rf ./lib && npm run lint && tsc -d",
+    "pub": "npm run build && npm publish --registry http://registry.npmjs.org"
+  },
+  "author": "duxiaodong",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/react": "^16.0.7",
+    "@types/react-dom": "^15.5.4",
+    "prop-types": "^15.6.0",
+    "react": "^15.6.2",
+    "react-dom": "^15.6.2",
+    "react-hot-loader": "^3.0.0-beta.7",
+    "tslint": "^5.7.0",
+    "tslint-microsoft-contrib": "^5.0.1",
+    "tslint-react": "^3.2.0",
+    "typescript": "^2.5.2"
+  },
+  "dependencies": {
+    "react-shadow": "^2.1.0"
+  },
+  "peerDependencies": {
+    "react": "^15.0.0",
+    "react-dom": "^15.0.0"
+  }
+}
