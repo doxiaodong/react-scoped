@@ -1,5 +1,7 @@
 {
   "extends": "typescript-react",
+  "publicUrl": ".",
+  "distDir": "docs",
   "entries": {
     "index": "examples/index.tsx"
   },
