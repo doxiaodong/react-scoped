@@ -1,5 +1,6 @@
-import React, { Component } from 'react'
-import ShadowDOM from 'react-shadow'
+import React, { PureComponent } from 'react'
+import PropTypes from 'prop-types'
+import ShadowDOM from './ReactShadow'
 import ViewEncapsulation from './ViewEncapsulation'
 import styleCompiler, { CONTENT_ATTR } from './StyleCompiler'
 import { getUuid } from './utils'
@@ -9,28 +10,31 @@ export interface IReactScopedProps {
   encapsulation?: ViewEncapsulation
 }
 
-export default class ReactScoped extends Component<IReactScopedProps, {}> {
-
+export default class ReactScoped extends PureComponent<IReactScopedProps, {}> {
+  static propTypes = {
+    style: PropTypes.arrayOf(PropTypes.string),
+    encapsulation: PropTypes.oneOf([
+      ViewEncapsulation.Emulated,
+      ViewEncapsulation.Native,
+      ViewEncapsulation.None
+    ])
+  }
   static defaultProps = {
     styles: [],
     encapsulation: ViewEncapsulation.Emulated
   }
 
   state = {
-    styles: '',
     currentUuid: getUuid()
   }
 
-  componentDidMount() {
+  compileStyles(props) {
     const styles = styleCompiler.compileStyles(
-      this.props.styles, this.props.encapsulation === ViewEncapsulation.Emulated,
+      props.styles, props.encapsulation === ViewEncapsulation.Emulated,
       this.state.currentUuid
     )
 
-    if (styles !== '') {
-      this.setState({ styles })
-    }
-
+    return styles
   }
 
   /**
@@ -38,6 +42,8 @@ export default class ReactScoped extends Component<IReactScopedProps, {}> {
    * the react children Components are not included
    */
   modifyChildren = (child) => {
+    // TODO: find a stable way to check rather than `typeof child.type` and `typeof child.props.children`
+
     // null for null/false like {false && <div />}
     if (!child) {
       return null
@@ -46,7 +52,7 @@ export default class ReactScoped extends Component<IReactScopedProps, {}> {
     if (typeof child.type === 'string') {
       // child.props.children string for html content text
       if (typeof child.props.children === 'string') {
-        return React.cloneElement(child, {[CONTENT_ATTR + this.state.currentUuid]: ''})
+        return React.cloneElement(child, { [CONTENT_ATTR + this.state.currentUuid]: '' })
       }
       return React.cloneElement(
         child,
@@ -59,25 +65,35 @@ export default class ReactScoped extends Component<IReactScopedProps, {}> {
         }
       )
     }
-    return React.cloneElement(child)
+    return child
   }
 
   render() {
     const {encapsulation, children} = this.props
-    const {styles} = this.state
+    const compiledStyles = this.compileStyles(this.props)
+    const styleElement = <style type="text/css" dangerouslySetInnerHTML={{ __html: compiledStyles }} />
+
     if (encapsulation === ViewEncapsulation.Native) {
       return (
         <ShadowDOM>
           <div>
-            <style type="text/css" dangerouslySetInnerHTML={{ __html: styles }} />
+            {styleElement}
             {this.props.children}
           </div>
         </ShadowDOM>
       )
     }
+    if (encapsulation === ViewEncapsulation.None) {
+      return (
+        <div>
+          {styleElement}
+          {this.props.children}
+        </div>
+      )
+    }
     return (
       <div>
-        <style type="text/css" dangerouslySetInnerHTML={{ __html: styles }} />
+        {styleElement}
         {React.Children.map(children, this.modifyChildren)}
       </div>
     )

@@ -5,13 +5,15 @@ import styles from './style.less'
 
 export default class SubComponent extends Component<{}, {}> {
 
+  timeout = null
+
   state = {
     text: 'Sub',
     showMore: false
   }
 
   componentDidMount() {
-    setTimeout(() => {
+    this.timeout = setTimeout(() => {
       this.setState({
         text: 'Timeout Sub',
         showMore: true
@@ -19,13 +21,17 @@ export default class SubComponent extends Component<{}, {}> {
     }, 5000)
   }
 
+  componentWillUnmount() {
+    if (this.timeout) {
+      clearTimeout(this.timeout)
+    }
+  }
+
   render() {
     return (
-      <ReactScoped encapsulation={ViewEncapsulation.Emulated} styles={[styles]}>
-        <div>
-          <p className="sub">{this.state.text}</p>
-          {this.state.showMore && <p>more</p>}
-        </div>
+      <ReactScoped encapsulation={ViewEncapsulation.Native} styles={[styles]}>
+        <p className="sub global-test">{this.state.text}</p>
+        {this.state.showMore && <p>more</p>}
       </ReactScoped>
     )
   }
