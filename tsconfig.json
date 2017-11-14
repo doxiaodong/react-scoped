@@ -13,6 +13,7 @@
     "experimentalDecorators": true,
     "outDir": "lib",
     "lib": [
+      "es2015.core",
       "es5",
       "dom"
     ],
